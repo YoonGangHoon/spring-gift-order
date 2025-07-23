@@ -4,6 +4,7 @@ import gift.dto.KakaoTokenResponseDto;
 import gift.exception.oauth.KakaoErrorHandler;
 import gift.exception.oauth.OAuthException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,7 +18,11 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class KakaoOAuthService {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+    public KakaoOAuthService(RestTemplateBuilder builder) {
+        this.restTemplate = builder.build();
+    }
+
     @Value("${kakao.client-id}")
     private String clientId;
 
