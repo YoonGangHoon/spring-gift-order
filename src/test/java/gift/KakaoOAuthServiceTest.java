@@ -27,7 +27,6 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @RestClientTest(KakaoOAuthService.class)
-@Import({RestTemplateConfig.class, KakaoErrorHandler.class})
 class KakaoOAuthServiceTest {
 
     @Autowired
