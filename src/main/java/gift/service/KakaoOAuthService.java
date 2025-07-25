@@ -52,8 +52,8 @@ public class KakaoOAuthService {
             );
             return response.getBody();
         } catch (HttpClientErrorException ex) {
-            KakaoErrorHandler.handle(ex);
-            throw new OAuthException("카카오 인증 실패: " + ex.getMessage());
+            String message = KakaoErrorHandler.parseErrorMessage(ex);
+            throw new OAuthException(message, ex);
         }
     }
 }
