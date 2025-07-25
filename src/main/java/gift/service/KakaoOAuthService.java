@@ -1,8 +1,6 @@
 package gift.service;
 
 import gift.dto.KakaoTokenResponseDto;
-import gift.exception.oauth.KakaoErrorHandler;
-import gift.exception.oauth.OAuthException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -12,7 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -43,17 +40,12 @@ public class KakaoOAuthService {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
 
-        try {
-            var response = restTemplate.exchange(
-                    url,
-                    HttpMethod.POST,
-                    request,
-                    KakaoTokenResponseDto.class
-            );
-            return response.getBody();
-        } catch (HttpClientErrorException ex) {
-            String message = KakaoErrorHandler.parseErrorMessage(ex);
-            throw new OAuthException(message, ex);
-        }
+        var response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                request,
+                KakaoTokenResponseDto.class
+        );
+        return response.getBody();
     }
 }

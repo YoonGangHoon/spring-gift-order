@@ -1,15 +1,22 @@
 package gift;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import gift.config.RestTemplateConfig;
 import gift.dto.KakaoTokenResponseDto;
+import gift.exception.oauth.KakaoErrorHandler;
 import gift.exception.oauth.OAuthException;
 import gift.service.KakaoOAuthService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,6 +27,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @RestClientTest(KakaoOAuthService.class)
+@Import({RestTemplateConfig.class, KakaoErrorHandler.class})
 class KakaoOAuthServiceTest {
 
     @Autowired
@@ -27,6 +35,27 @@ class KakaoOAuthServiceTest {
 
     @Autowired
     private MockRestServiceServer server;
+
+    @Autowired
+    private RestTemplateBuilder restTemplateBuilder;
+
+    @BeforeEach
+    public void setup() {
+        RestTemplate restTemplate = new RestTemplateBuilder()
+                .errorHandler(new KakaoErrorHandler(new ObjectMapper()))
+                .build();
+
+        server = MockRestServiceServer.createServer(restTemplate);
+
+        RestTemplateBuilder fixedBuilder = new RestTemplateBuilder() {
+            @Override
+            public RestTemplate build() {
+                return restTemplate;
+            }
+        };
+
+        kakaoOAuthService = new KakaoOAuthService(fixedBuilder);
+    }
 
     @Test
     void 파싱_성공() {
@@ -83,6 +112,6 @@ class KakaoOAuthServiceTest {
             kakaoOAuthService.getAccessToken(code);
         });
 
-        assertTrue(exception.getMessage().contains("동의하지 않은 항목입니다. 추가 동의가 필요합니다."));
+        assertTrue(exception.getMessage().contains("-402"));
     }
 }
