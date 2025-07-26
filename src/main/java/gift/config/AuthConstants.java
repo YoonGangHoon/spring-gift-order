@@ -4,6 +4,8 @@ public class AuthConstants {
     public static final String[] ALLOWLIST = {
             "/api/members/login",
             "/api/members/register",
-            "/admin/login"
+            "/admin/login",
+            "/oauth/kakao/callback",
+            "/login"
     };
 }
