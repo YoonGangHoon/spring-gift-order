@@ -1,0 +1,52 @@
+package gift.entity;
+
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "orders")
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "optionId")
+    private Option option;
+
+    private Integer quantity;
+
+    private LocalDateTime orderDateTime;
+
+    private String message;
+
+    public Order() {}
+
+    public Order(Option option, Integer quantity, LocalDateTime now, String message) {
+        this.option = option;
+        this.quantity = quantity;
+        this.orderDateTime = now;
+        this.message = message;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Option getOption() {
+        return option;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public LocalDateTime getOrderDateTime() {
+        return orderDateTime;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+}
