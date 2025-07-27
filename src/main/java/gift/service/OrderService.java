@@ -8,9 +8,11 @@ import gift.exception.OptionNotExistException;
 import gift.repository.OptionRepository;
 import gift.repository.OrderRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -35,5 +37,13 @@ public class OrderService {
         Order saved = orderRepository.save(order);
         kakaoMessageService.sendOrderMessage(kakaoAccessToken, saved);
         return new OrderResponseDto(saved.getId(), saved.getOption().getId(), saved.getQuantity(), saved.getOrderDateTime(), saved.getMessage());
+    }
+
+    public List<OrderResponseDto> getAllOrders(Pageable pageable) {
+
+        return orderRepository.findAll(pageable)
+                .stream()
+                .map(o -> new OrderResponseDto(o.getId(), o.getOption().getId(), o.getQuantity(), o.getOrderDateTime(), o.getMessage()))
+                .toList();
     }
 }
