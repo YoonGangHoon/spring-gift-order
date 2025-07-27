@@ -34,6 +34,8 @@ public class Option {
         return quantity;
     }
 
+    public Product getProduct() { return product; }
+
     protected Option() {}
 
     public Option(String name, Integer quantity,  Product product) {
