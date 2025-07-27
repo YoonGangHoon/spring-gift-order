@@ -24,6 +24,9 @@ public class OrderService {
     public OrderResponseDto createOrder(OrderRequestDto requestDto) {
         Option option = optionRepository.findById(requestDto.optionId())
                 .orElseThrow(() -> new OptionNotExistException(requestDto.optionId()));
+
+        option.decreaseQuantity(requestDto.quantity());
+
         Order order = new Order(option, requestDto.quantity(), LocalDateTime.now(), requestDto.message());
         Order saved = orderRepository.save(order);
         return new OrderResponseDto(saved.getId(), saved.getOption().getId(), saved.getQuantity(), saved.getOrderDateTime(), saved.getMessage());
