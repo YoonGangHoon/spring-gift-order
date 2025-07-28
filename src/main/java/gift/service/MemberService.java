@@ -42,12 +42,13 @@ public class MemberService {
         Member existedMember = memberRepository.findByEmail(requestDto.email())
                 .orElseThrow(() -> new MemberNotFoundException("email", requestDto.email()));
 
-        if (existedMember.getPassword().equals(requestDto.password())) {
-             return jwtProvider.generateToken(existedMember);
-        }
-        else{
-            throw new InvalidPasswordException();
-        }
+        return "";
+//        if (existedMember.getPassword().equals(requestDto.password())) {
+//             return jwtProvider.generateToken(existedMember);
+//        }
+//        else{
+//            throw new InvalidPasswordException();
+//        }
     }
 
     public List<MemberResponseDto> findAll() {
