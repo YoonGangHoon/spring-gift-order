@@ -32,6 +32,6 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 
         Long memberId = Long.parseLong(memberIdAttr);
 
-        return new Member(memberId, null, null, null, null);
+        return new Member(memberId);
     }
 }

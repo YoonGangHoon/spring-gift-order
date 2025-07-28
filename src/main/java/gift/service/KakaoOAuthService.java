@@ -2,9 +2,9 @@ package gift.service;
 
 import gift.dto.KakaoTokenResponseDto;
 import gift.dto.KakaoUserInfoResponseDto;
-import gift.entity.KakaoMember;
+import gift.entity.Member;
 import gift.jwt.JwtProvider;
-import gift.repository.KakaoMemberRepository;
+import gift.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 public class KakaoOAuthService {
 
     private final RestTemplate restTemplate;
-    private final KakaoMemberRepository kakaoMemberRepository;
+    private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
 
     @Value("${kakao.client-id}")
@@ -37,21 +37,22 @@ public class KakaoOAuthService {
 
     public KakaoOAuthService(
             RestTemplateBuilder builder,
-            KakaoMemberRepository kakaoMemberRepository,
+            MemberRepository memberRepository,
             JwtProvider jwtProvider
     ) {
         this.restTemplate = builder.build();
-        this.kakaoMemberRepository = kakaoMemberRepository;
+        this.memberRepository = memberRepository;
         this.jwtProvider = jwtProvider;
     }
 
     public String loginOrRegister(String code) {
         KakaoTokenResponseDto token = getAccessToken(code);
         KakaoUserInfoResponseDto user = getUserInfo(token.accessToken());
-        KakaoMember member = kakaoMemberRepository.findByKakaoId(user.id())
-                .orElseGet(() -> kakaoMemberRepository.save(
-                        new KakaoMember(
+        Member member = memberRepository.findByKakaoId(user.id())
+                .orElseGet(() -> memberRepository.save(
+                        new Member(
                                 user.id(),
+                                user.kakao_account().profile().nickname(),
                                 token.accessToken(),
                                 token.refreshToken(),
                                 token.refreshTokenExpiresIn()
