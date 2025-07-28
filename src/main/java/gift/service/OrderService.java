@@ -5,9 +5,11 @@ import gift.dto.OrderResponseDto;
 import gift.entity.Member;
 import gift.entity.Option;
 import gift.entity.Order;
+import gift.entity.Wish;
 import gift.exception.OptionNotExistException;
 import gift.repository.OptionRepository;
 import gift.repository.OrderRepository;
+import gift.repository.WishRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
@@ -22,15 +24,18 @@ public class OrderService {
     private final KakaoMessageService kakaoMessageService;
     private final OrderRepository orderRepository;
     private final OptionRepository optionRepository;
+    private final WishRepository wishRepository;
     private final EntityManager entityManager;
 
     public OrderService(KakaoMessageService kakaoMessageService,
                         OrderRepository orderRepository,
                         OptionRepository optionRepository,
+                        WishRepository wishRepository,
                         EntityManager entityManager) {
         this.kakaoMessageService = kakaoMessageService;
         this.orderRepository = orderRepository;
         this.optionRepository = optionRepository;
+        this.wishRepository = wishRepository;
         this.entityManager = entityManager;
     }
 
@@ -45,6 +50,10 @@ public class OrderService {
         Order order = new Order(memberReference, option, requestDto.quantity(), LocalDateTime.now(), requestDto.message());
         Order saved = orderRepository.save(order);
         kakaoMessageService.sendOrderMessage(kakaoAccessToken, saved);
+
+        Wish wish = wishRepository.findByMemberIdAndProductId(memberId, option.getProduct().getId());
+        wishRepository.delete(wish);
+
         return new OrderResponseDto(saved.getId(), saved.getOption().getId(), saved.getQuantity(), saved.getOrderDateTime(), saved.getMessage());
     }
 
