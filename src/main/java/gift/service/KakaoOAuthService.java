@@ -63,7 +63,7 @@ public class KakaoOAuthService {
         return jwtProvider.generateToken(member);
     }
 
-    private KakaoTokenResponseDto getAccessToken(String code) {
+    public KakaoTokenResponseDto getAccessToken(String code) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -78,7 +78,7 @@ public class KakaoOAuthService {
         return restTemplate.postForObject(tokenUrl, request, KakaoTokenResponseDto.class);
     }
 
-    private KakaoUserInfoResponseDto getUserInfo(String accessToken) {
+    public KakaoUserInfoResponseDto getUserInfo(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
 

@@ -1,22 +1,24 @@
 package gift;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gift.config.RestTemplateConfig;
 import gift.dto.KakaoTokenResponseDto;
 import gift.exception.oauth.KakaoErrorHandler;
 import gift.exception.oauth.OAuthException;
+import gift.jwt.JwtProvider;
+import gift.repository.MemberRepository;
 import gift.service.KakaoOAuthService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.client.RestTemplateCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -27,6 +29,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @RestClientTest(KakaoOAuthService.class)
+@Import(KakaoOAuthServiceTest.TestConfig.class)
 class KakaoOAuthServiceTest {
 
     @Autowired
@@ -35,26 +38,26 @@ class KakaoOAuthServiceTest {
     @Autowired
     private MockRestServiceServer server;
 
-    @Autowired
-    private RestTemplateBuilder restTemplateBuilder;
+    @MockBean
+    private MemberRepository memberRepository;
 
-    @BeforeEach
-    public void setup() {
-        RestTemplate restTemplate = new RestTemplateBuilder()
-                .errorHandler(new KakaoErrorHandler(new ObjectMapper()))
-                .build();
+    @MockBean
+    private JwtProvider jwtProvider;
 
-        server = MockRestServiceServer.createServer(restTemplate);
+    @TestConfiguration
+    static class TestConfig {
 
-        RestTemplateBuilder fixedBuilder = new RestTemplateBuilder() {
-            @Override
-            public RestTemplate build() {
-                return restTemplate;
-            }
-        };
+        @Bean
+        public KakaoErrorHandler kakaoErrorHandler(ObjectMapper objectMapper) {
+            return new KakaoErrorHandler(objectMapper);
+        }
 
-        kakaoOAuthService = new KakaoOAuthService(fixedBuilder);
+        @Bean
+        public RestTemplateCustomizer errorHandlerCustomizer(KakaoErrorHandler errorHandler) {
+            return restTemplate -> restTemplate.setErrorHandler(errorHandler);
+        }
     }
+
 
     @Test
     void 파싱_성공() {

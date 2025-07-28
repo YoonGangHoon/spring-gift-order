@@ -28,7 +28,7 @@ public class WishJpaTest {
     @Test
     void 위시리스트를_회원_id로_페이징_조회() {
         // given
-        Member member = new Member("홍길동", "hong@email.com", "password");
+        Member member = new Member(1L, "test_nickname", "access_token", "refresh_token", 1);
         entityManager.persist(member);
 
         Product product1 = new Product("아이스 아메리카노", 4500, "ice_americano.jpg");
@@ -60,7 +60,7 @@ public class WishJpaTest {
     @Test
     void 위시를_삭제한다() {
         // given
-        Member member = new Member("홍길동", "hong@email.com", "password");
+        Member member = new Member(1L, "test_nickname", "access_token", "refresh_token", 1);
         Product product = new Product("콜드브루", 4800, "coldbrew.jpg");
 
         // when
