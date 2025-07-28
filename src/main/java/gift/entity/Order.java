@@ -25,7 +25,7 @@ public class Order {
 
     private String message;
 
-    public Order() {}
+    protected Order() {}
 
     public Order(Member member, Option option, Integer quantity, LocalDateTime now, String message) {
         this.member = member;
