@@ -1,6 +1,7 @@
 package gift.jwt;
 
-import gift.entity.KakaoMember;
+import gift.entity.Admin;
+import gift.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -23,9 +24,17 @@ public class JwtProvider {
         this.key = Keys.hmacShaKeyFor(secretKeyString.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(KakaoMember member) {
+    public String generateToken(Member member) {
         return Jwts.builder()
                 .subject(member.getId().toString())
+                .signWith(key)
+                .compact();
+    }
+
+    public String generateToken(Admin admin) {
+        return Jwts.builder()
+                .subject(admin.getId().toString())
+                .claim("role", admin.getRole().toString())
                 .signWith(key)
                 .compact();
     }
