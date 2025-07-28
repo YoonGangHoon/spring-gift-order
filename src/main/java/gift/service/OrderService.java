@@ -6,11 +6,12 @@ import gift.entity.Member;
 import gift.entity.Option;
 import gift.entity.Order;
 import gift.entity.Wish;
+import gift.exception.MemberNotFoundException;
 import gift.exception.OptionNotExistException;
+import gift.repository.MemberRepository;
 import gift.repository.OptionRepository;
 import gift.repository.OrderRepository;
 import gift.repository.WishRepository;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,31 +26,32 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OptionRepository optionRepository;
     private final WishRepository wishRepository;
-    private final EntityManager entityManager;
+    private final MemberRepository memberRepository;
 
     public OrderService(KakaoMessageService kakaoMessageService,
                         OrderRepository orderRepository,
                         OptionRepository optionRepository,
                         WishRepository wishRepository,
-                        EntityManager entityManager) {
+                        MemberRepository memberRepository) {
         this.kakaoMessageService = kakaoMessageService;
         this.orderRepository = orderRepository;
         this.optionRepository = optionRepository;
         this.wishRepository = wishRepository;
-        this.entityManager = entityManager;
+        this.memberRepository = memberRepository;
     }
 
     @Transactional
-    public OrderResponseDto createOrder(Long memberId, String kakaoAccessToken , OrderRequestDto requestDto) {
+    public OrderResponseDto createOrder(Long memberId, OrderRequestDto requestDto) {
         Option option = optionRepository.findById(requestDto.optionId())
                 .orElseThrow(() -> new OptionNotExistException(requestDto.optionId()));
 
         option.decreaseQuantity(requestDto.quantity());
 
-        Member memberReference = entityManager.getReference(Member.class, memberId);
-        Order order = new Order(memberReference, option, requestDto.quantity(), LocalDateTime.now(), requestDto.message());
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("memberId", memberId.toString()));
+        Order order = new Order(member, option, requestDto.quantity(), LocalDateTime.now(), requestDto.message());
         Order saved = orderRepository.save(order);
-        kakaoMessageService.sendOrderMessage(kakaoAccessToken, saved);
+        kakaoMessageService.sendOrderMessage(member.getAccessToken(), saved);
 
         Wish wish = wishRepository.findByMemberIdAndProductId(memberId, option.getProduct().getId());
         wishRepository.delete(wish);
