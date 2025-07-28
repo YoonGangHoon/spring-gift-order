@@ -1,7 +1,9 @@
 package gift.controller;
 
+import gift.config.LoginMember;
 import gift.dto.OrderRequestDto;
 import gift.dto.OrderResponseDto;
+import gift.entity.Member;
 import gift.service.OrderService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,16 +24,18 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderResponseDto> order(
+            @LoginMember Member member,
             @RequestHeader(value = "X-Kakao-Access-Token", required = false) String kakaoAccessToken,
             @RequestBody OrderRequestDto requestDto) {
-        return ResponseEntity.ok(orderService.createOrder(kakaoAccessToken, requestDto));
+        return ResponseEntity.ok(orderService.createOrder(member.getId(), kakaoAccessToken, requestDto));
     }
 
     @GetMapping
     public ResponseEntity<List<OrderResponseDto>> getOrders(
+            @LoginMember Member member,
             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
     ) {
-        List<OrderResponseDto> responseDtoList = orderService.getAllOrders(pageable);
+        List<OrderResponseDto> responseDtoList = orderService.getAllOrders(member.getId(), pageable);
         return ResponseEntity.ok(responseDtoList);
     }
 }

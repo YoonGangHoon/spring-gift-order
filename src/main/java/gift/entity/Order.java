@@ -12,6 +12,10 @@ public class Order {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "memberId")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "optionId")
     private Option option;
 
@@ -23,7 +27,8 @@ public class Order {
 
     public Order() {}
 
-    public Order(Option option, Integer quantity, LocalDateTime now, String message) {
+    public Order(Member member, Option option, Integer quantity, LocalDateTime now, String message) {
+        this.member = member;
         this.option = option;
         this.quantity = quantity;
         this.orderDateTime = now;
