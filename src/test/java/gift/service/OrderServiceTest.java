@@ -1,7 +1,7 @@
 package gift.service;
 
-import gift.dto.OrderRequestDto;
-import gift.dto.OrderResponseDto;
+import gift.dto.order.OrderRequestDto;
+import gift.dto.order.OrderResponseDto;
 import gift.entity.*;
 import gift.exception.MemberNotFoundException;
 import gift.exception.OptionNotExistException;

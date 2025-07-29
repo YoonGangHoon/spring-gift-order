@@ -1,6 +1,6 @@
 package gift.controller.view;
 
-import gift.dto.ProductRequestDto;
+import gift.dto.product.ProductRequestDto;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;

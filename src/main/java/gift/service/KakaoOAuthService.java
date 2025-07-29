@@ -1,7 +1,7 @@
 package gift.service;
 
-import gift.dto.KakaoTokenResponseDto;
-import gift.dto.KakaoUserInfoResponseDto;
+import gift.dto.kakao.KakaoTokenResponseDto;
+import gift.dto.kakao.KakaoUserInfoResponseDto;
 import gift.entity.Member;
 import gift.jwt.JwtProvider;
 import gift.repository.MemberRepository;

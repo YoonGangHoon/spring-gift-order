@@ -1,8 +1,8 @@
 package gift.e2e;
 
-import gift.dto.OptionRequestDto;
-import gift.dto.ProductRequestDto;
-import gift.dto.ProductResponseDto;
+import gift.dto.option.OptionRequestDto;
+import gift.dto.product.ProductRequestDto;
+import gift.dto.product.ProductResponseDto;
 import gift.entity.Member;
 import gift.jwt.JwtProvider;
 import gift.repository.MemberRepository;

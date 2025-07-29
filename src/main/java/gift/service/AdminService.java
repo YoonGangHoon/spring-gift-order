@@ -1,6 +1,6 @@
 package gift.service;
 
-import gift.dto.MemberLoginRequestDto;
+import gift.dto.member.MemberLoginRequestDto;
 import gift.entity.Admin;
 import gift.exception.InvalidPasswordException;
 import gift.exception.MemberNotFoundException;

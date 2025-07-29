@@ -1,7 +1,7 @@
 package gift.service;
 
-import gift.dto.WishCreateResponseDto;
-import gift.dto.WishResponseDto;
+import gift.dto.wish.WishCreateResponseDto;
+import gift.dto.wish.WishResponseDto;
 import gift.entity.Member;
 import gift.entity.Product;
 import gift.entity.Wish;

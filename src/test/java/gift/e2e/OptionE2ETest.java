@@ -1,8 +1,8 @@
 package gift.e2e;
 
-import gift.dto.OptionRequestDto;
-import gift.dto.OptionResponseDto;
-import gift.dto.ProductRequestDto;
+import gift.dto.option.OptionRequestDto;
+import gift.dto.option.OptionResponseDto;
+import gift.dto.product.ProductRequestDto;
 import gift.service.KakaoOAuthService;
 import gift.utils.E2ETestUtils;
 import org.assertj.core.api.Assertions;

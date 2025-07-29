@@ -1,9 +1,9 @@
 //package gift;
 //
-//import gift.dto.MemberLoginRequestDto;
-//import gift.dto.MemberLoginResponseDto;
-//import gift.dto.MemberRequestDto;
-//import gift.dto.MemberResponseDto;
+//import gift.dto.member.MemberLoginRequestDto;
+//import gift.dto.member.MemberLoginResponseDto;
+//import gift.dto.member.MemberRequestDto;
+//import gift.dto.member.MemberResponseDto;
 //import gift.service.KakaoOAuthService;
 //import gift.utils.E2ETestUtils;
 //import org.junit.jupiter.api.BeforeEach;

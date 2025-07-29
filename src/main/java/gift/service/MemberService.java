@@ -1,6 +1,6 @@
 package gift.service;
 
-import gift.dto.MemberResponseDto;
+import gift.dto.member.MemberResponseDto;
 import gift.entity.Member;
 import gift.exception.MemberNotFoundException;
 import gift.repository.MemberRepository;

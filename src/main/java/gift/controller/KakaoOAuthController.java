@@ -1,6 +1,6 @@
 package gift.controller;
 
-import gift.dto.MemberLoginResponseDto;
+import gift.dto.member.MemberLoginResponseDto;
 import gift.service.KakaoOAuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

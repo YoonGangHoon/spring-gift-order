@@ -1,7 +1,7 @@
 package gift.exception.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gift.dto.KakaoErrorResponseDto;
+import gift.dto.kakao.KakaoErrorResponseDto;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.lang.NonNull;

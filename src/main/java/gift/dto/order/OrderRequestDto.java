@@ -1,4 +1,4 @@
-package gift.dto;
+package gift.dto.order;
 
 public record OrderRequestDto(
         Long optionId,

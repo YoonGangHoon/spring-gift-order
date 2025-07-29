@@ -1,6 +1,6 @@
 package gift.controller.view;
 
-import gift.dto.MemberLoginRequestDto;
+import gift.dto.member.MemberLoginRequestDto;
 import gift.service.AdminService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;

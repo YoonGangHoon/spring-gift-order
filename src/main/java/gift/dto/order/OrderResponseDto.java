@@ -1,4 +1,4 @@
-package gift.dto;
+package gift.dto.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

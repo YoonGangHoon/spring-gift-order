@@ -1,6 +1,11 @@
 package gift.e2e;
 
-import gift.dto.*;
+import gift.dto.option.OptionRequestDto;
+import gift.dto.product.ProductRequestDto;
+import gift.dto.product.ProductResponseDto;
+import gift.dto.wish.WishCreateResponseDto;
+import gift.dto.wish.WishRequestDto;
+import gift.dto.wish.WishResponseDto;
 import gift.service.KakaoOAuthService;
 import gift.utils.E2ETestUtils;
 import org.junit.jupiter.api.BeforeEach;

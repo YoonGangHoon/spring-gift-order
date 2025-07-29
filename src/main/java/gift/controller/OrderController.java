@@ -1,8 +1,8 @@
 package gift.controller;
 
 import gift.config.LoginMember;
-import gift.dto.OrderRequestDto;
-import gift.dto.OrderResponseDto;
+import gift.dto.order.OrderRequestDto;
+import gift.dto.order.OrderResponseDto;
 import gift.entity.Member;
 import gift.service.OrderService;
 import org.springframework.data.domain.Pageable;

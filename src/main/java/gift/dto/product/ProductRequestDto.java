@@ -1,5 +1,6 @@
-package gift.dto;
+package gift.dto.product;
 
+import gift.dto.option.OptionRequestDto;
 import gift.validation.ForbiddenWord;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;

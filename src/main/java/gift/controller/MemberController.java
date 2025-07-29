@@ -1,7 +1,7 @@
 package gift.controller;
 
 import gift.config.LoginMember;
-import gift.dto.MemberResponseDto;
+import gift.dto.member.MemberResponseDto;
 import gift.entity.Member;
 import gift.service.MemberService;
 import org.springframework.http.ResponseEntity;

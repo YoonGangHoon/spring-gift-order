@@ -1,7 +1,7 @@
 package gift.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gift.dto.KakaoTokenResponseDto;
+import gift.dto.kakao.KakaoTokenResponseDto;
 import gift.exception.oauth.KakaoErrorHandler;
 import gift.exception.oauth.OAuthException;
 import gift.jwt.JwtProvider;

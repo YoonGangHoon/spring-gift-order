@@ -1,7 +1,7 @@
 package gift.service;
 
-import gift.dto.OptionRequestDto;
-import gift.dto.OptionResponseDto;
+import gift.dto.option.OptionRequestDto;
+import gift.dto.option.OptionResponseDto;
 import gift.entity.Option;
 import gift.entity.Product;
 import gift.exception.DuplicateOptionNameException;

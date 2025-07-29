@@ -1,4 +1,4 @@
-package gift.dto;
+package gift.dto.kakao;
 
 public record KakaoUserInfoResponseDto(
         Long id,
