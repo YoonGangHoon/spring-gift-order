@@ -1,12 +1,14 @@
-package gift;
+package gift.e2e;
 
 import gift.dto.OptionRequestDto;
 import gift.dto.OptionResponseDto;
 import gift.dto.ProductRequestDto;
+import gift.service.KakaoOAuthService;
 import gift.utils.E2ETestUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,10 @@ public class OptionE2ETest {
 
     private RestClient restClient;
     private String token;
+    private String fakeCode;
+
+    @Autowired
+    private KakaoOAuthService kakaoOAuthService;
 
     @BeforeEach
     void setUp(){
@@ -36,7 +42,8 @@ public class OptionE2ETest {
             .baseUrl("http://localhost:" + port)
             .build();
 
-        token = new E2ETestUtils(restClient).회원가입_후_토큰_발급();
+        fakeCode = "fake-code";
+        token = new E2ETestUtils(kakaoOAuthService).카카오_테스트_계정으로_토큰_발급(fakeCode);
 
         List<OptionRequestDto> options = of(
                 new OptionRequestDto("테스트 옵션1", 100),

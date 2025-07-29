@@ -1,9 +1,11 @@
-package gift;
+package gift.e2e;
 
 import gift.dto.*;
+import gift.service.KakaoOAuthService;
 import gift.utils.E2ETestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,7 +26,11 @@ public class WishE2ETest {
     private int port;
 
     private RestClient restClient;
-    String token;
+    private String token;
+    private String fakeCode;
+
+    @Autowired
+    private KakaoOAuthService kakaoOAuthService;
 
     @BeforeEach
     void setUp() {
@@ -32,7 +38,8 @@ public class WishE2ETest {
                 .baseUrl("http://localhost:" + port)
                 .build();
 
-        token = new E2ETestUtils(restClient).회원가입_후_토큰_발급();
+        fakeCode = "fake-code";
+        token = new E2ETestUtils(kakaoOAuthService).카카오_테스트_계정으로_토큰_발급(fakeCode);
     }
 
     @Test
@@ -89,30 +96,6 @@ public class WishE2ETest {
                 .body(new ParameterizedTypeReference<List<WishResponseDto>>() {});
 
         assertThat(afterDelete).isEmpty();
-    }
-
-    private String 회원가입_후_토큰_발급() {
-        String name = "홍길동";
-        String email = "hong" + System.currentTimeMillis() + "@email.com";
-        String password = "password";
-
-        MemberRequestDto joinRequest = new MemberRequestDto(name, email, password);
-
-        restClient.post()
-                .uri("/api/members/register")
-                .body(joinRequest)
-                .retrieve()
-                .toBodilessEntity();
-
-        MemberLoginRequestDto loginRequest = new MemberLoginRequestDto(email, password);
-
-        MemberLoginResponseDto loginResponse = restClient.post()
-                .uri("/api/members/login")
-                .body(loginRequest)
-                .retrieve()
-                .body(MemberLoginResponseDto.class);
-
-        return loginResponse.token();
     }
 
     @Test

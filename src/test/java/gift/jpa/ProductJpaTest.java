@@ -1,4 +1,4 @@
-package gift;
+package gift.jpa;
 
 import gift.entity.Product;
 import gift.repository.ProductRepository;

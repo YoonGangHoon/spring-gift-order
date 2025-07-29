@@ -1,4 +1,4 @@
-package gift;
+package gift.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gift.dto.KakaoTokenResponseDto;
@@ -6,7 +6,6 @@ import gift.exception.oauth.KakaoErrorHandler;
 import gift.exception.oauth.OAuthException;
 import gift.jwt.JwtProvider;
 import gift.repository.MemberRepository;
-import gift.service.KakaoOAuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
@@ -57,7 +56,6 @@ class KakaoOAuthServiceTest {
             return restTemplate -> restTemplate.setErrorHandler(errorHandler);
         }
     }
-
 
     @Test
     void 파싱_성공() {

@@ -1,10 +1,9 @@
-package gift;
+package gift.service;
 
 import gift.entity.Member;
 import gift.exception.oauth.KakaoErrorHandler;
 import gift.jwt.JwtProvider;
 import gift.repository.MemberRepository;
-import gift.service.KakaoOAuthService;
 import gift.utils.E2ETestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 @RestClientTest(KakaoOAuthService.class)
 @Import({KakaoErrorHandler.class, E2ETestUtils.class})
-class KakaoOAuthServiceE2ETest {
+class KakaoOAuthServiceTokenTest {
 
     @Autowired
     private KakaoOAuthService kakaoOAuthService;
