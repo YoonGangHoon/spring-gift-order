@@ -15,7 +15,7 @@ public class Order {
     @JoinColumn(name = "memberId")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "optionId")
     private Option option;
 
