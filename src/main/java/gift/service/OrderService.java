@@ -22,18 +22,16 @@ import java.util.List;
 @Service
 public class OrderService {
 
-    private final KakaoMessageService kakaoMessageService;
     private final OrderRepository orderRepository;
     private final OptionRepository optionRepository;
     private final WishRepository wishRepository;
     private final MemberRepository memberRepository;
 
-    public OrderService(KakaoMessageService kakaoMessageService,
-                        OrderRepository orderRepository,
-                        OptionRepository optionRepository,
-                        WishRepository wishRepository,
-                        MemberRepository memberRepository) {
-        this.kakaoMessageService = kakaoMessageService;
+    public OrderService(
+            OrderRepository orderRepository,
+            OptionRepository optionRepository,
+            WishRepository wishRepository,
+            MemberRepository memberRepository) {
         this.orderRepository = orderRepository;
         this.optionRepository = optionRepository;
         this.wishRepository = wishRepository;
@@ -41,22 +39,21 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponseDto createOrder(Long memberId, OrderRequestDto requestDto) {
+    public Order createOrder(Long memberId, OrderRequestDto requestDto) {
         Option option = optionRepository.findById(requestDto.optionId())
                 .orElseThrow(() -> new OptionNotExistException(requestDto.optionId()));
-
         option.decreaseQuantity(requestDto.quantity());
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("memberId", memberId.toString()));
+
         Order order = new Order(member, option, requestDto.quantity(), LocalDateTime.now(), requestDto.message());
         Order saved = orderRepository.save(order);
-        kakaoMessageService.sendOrderMessage(member.getAccessToken(), saved);
 
         Wish wish = wishRepository.findByMemberIdAndProductId(memberId, option.getProduct().getId());
         wishRepository.delete(wish);
 
-        return new OrderResponseDto(saved.getId(), saved.getOption().getId(), saved.getQuantity(), saved.getOrderDateTime(), saved.getMessage());
+        return saved;
     }
 
     public List<OrderResponseDto> getAllOrders(Long memberId, Pageable pageable) {

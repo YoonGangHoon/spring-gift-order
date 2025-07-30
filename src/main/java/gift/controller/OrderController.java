@@ -4,6 +4,7 @@ import gift.config.LoginMember;
 import gift.dto.order.OrderRequestDto;
 import gift.dto.order.OrderResponseDto;
 import gift.entity.Member;
+import gift.service.KakaoOrderService;
 import gift.service.OrderService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,15 +19,17 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    public OrderController(OrderService orderService) {
+    private final KakaoOrderService kakaoOrderService;
+    public OrderController(OrderService orderService, KakaoOrderService kakaoOrderService) {
         this.orderService = orderService;
+        this.kakaoOrderService = kakaoOrderService;
     }
 
     @PostMapping
     public ResponseEntity<OrderResponseDto> order(
             @LoginMember Member member,
             @RequestBody OrderRequestDto requestDto) {
-        return ResponseEntity.ok(orderService.createOrder(member.getId(), requestDto));
+        return ResponseEntity.ok(kakaoOrderService.createOrder(member.getId(), requestDto));
     }
 
     @GetMapping
