@@ -1,7 +1,7 @@
 package gift.config;
 
-import gift.exception.oauth.KakaoApiErrorHandler;
-import gift.exception.oauth.KakaoAuthErrorHandler;
+import gift.exception.kakao.KakaoApiErrorHandler;
+import gift.exception.kakao.KakaoAuthErrorHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;

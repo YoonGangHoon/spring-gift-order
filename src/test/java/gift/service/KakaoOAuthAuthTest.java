@@ -2,7 +2,7 @@ package gift.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gift.dto.kakao.KakaoTokenResponseDto;
-import gift.exception.oauth.KakaoAuthErrorHandler;
+import gift.exception.kakao.KakaoAuthErrorHandler;
 import gift.jwt.JwtProvider;
 import gift.repository.MemberRepository;
 import org.junit.jupiter.api.Test;

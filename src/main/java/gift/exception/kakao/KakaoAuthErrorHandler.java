@@ -1,7 +1,7 @@
-package gift.exception.oauth;
+package gift.exception.kakao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gift.dto.kakao.KakaoApiErrorResponseDto;
+import gift.dto.kakao.KakaoAuthErrorResponseDto;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.lang.NonNull;
@@ -13,11 +13,11 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 @Component
-public class KakaoApiErrorHandler implements ResponseErrorHandler {
+public class KakaoAuthErrorHandler implements ResponseErrorHandler {
 
     private final ObjectMapper objectMapper;
 
-    public KakaoApiErrorHandler(ObjectMapper objectMapper) {
+    public KakaoAuthErrorHandler(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
@@ -31,13 +31,13 @@ public class KakaoApiErrorHandler implements ResponseErrorHandler {
         String responseBody = new String(response.getBody().readAllBytes(), StandardCharsets.UTF_8);
 
         try {
-            KakaoApiErrorResponseDto error = objectMapper
-                    .readerFor(KakaoApiErrorResponseDto.class)
+            KakaoAuthErrorResponseDto error = objectMapper
+                    .readerFor(KakaoAuthErrorResponseDto.class)
                     .readValue(responseBody);
 
-            throw new OAuthException("Kakao API 에러 - code: " + error.code() + ", msg: " + error.msg());
+            throw new KakaoOAuthException("Kakao 인증 에러 - error: " + error.error() + ", description: " + error.errorDescription());
         } catch (Exception e) {
-            throw new OAuthException("Kakao API 응답 파싱 실패: " + responseBody, e);
+            throw new KakaoOAuthException("Kakao 인증 응답 파싱 실패: " + responseBody, e);
         }
     }
 }

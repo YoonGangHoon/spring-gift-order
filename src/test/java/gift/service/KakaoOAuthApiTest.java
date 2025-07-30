@@ -3,7 +3,7 @@ package gift.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gift.dto.kakao.KakaoUserInfoResponseDto;
 import gift.entity.Member;
-import gift.exception.oauth.KakaoApiErrorHandler;
+import gift.exception.kakao.KakaoApiErrorHandler;
 import gift.jwt.JwtProvider;
 import gift.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
