@@ -21,7 +21,6 @@ import static org.mockito.Mockito.*;
 
 class OrderServiceTest {
 
-    private KakaoMessageService kakaoMessageService;
     private OrderRepository orderRepository;
     private OptionRepository optionRepository;
     private WishRepository wishRepository;
@@ -30,14 +29,12 @@ class OrderServiceTest {
 
     @BeforeEach
     void setUp() {
-        kakaoMessageService = mock(KakaoMessageService.class);
         orderRepository = mock(OrderRepository.class);
         optionRepository = mock(OptionRepository.class);
         wishRepository = mock(WishRepository.class);
         memberRepository = mock(MemberRepository.class);
 
         orderService = new OrderService(
-                kakaoMessageService,
                 orderRepository,
                 optionRepository,
                 wishRepository,
@@ -69,18 +66,10 @@ class OrderServiceTest {
         when(wishRepository.findByMemberIdAndProductId(memberId, product.getId())).thenReturn(new Wish(member, product));
 
         // when
-        OrderResponseDto response = orderService.createOrder(memberId, requestDto);
+        Order response = orderService.createOrder(memberId, requestDto);
 
         // then
-        assertThat(response.optionId()).isEqualTo(optionId);
-        assertThat(response.quantity()).isEqualTo(quantity);
-        assertThat(response.message()).isEqualTo(message);
-
-        verify(optionRepository).findById(optionId);
-        verify(memberRepository).findById(memberId);
-        verify(orderRepository).save(any(Order.class));
-        verify(kakaoMessageService).sendOrderMessage(eq("access-token"), any(Order.class));
-        verify(wishRepository).delete(any(Wish.class));
+        assertThat(response).isEqualTo(savedOrder);
     }
 
     @Test

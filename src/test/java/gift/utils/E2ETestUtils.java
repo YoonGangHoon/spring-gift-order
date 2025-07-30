@@ -1,18 +1,18 @@
 package gift.utils;
 
-import gift.service.KakaoOAuthService;
+import gift.entity.Member;
 import org.springframework.stereotype.Component;
 
 @Component
 public class E2ETestUtils {
 
-    private final KakaoOAuthService kakaoOAuthService;
-
-    public E2ETestUtils(KakaoOAuthService kakaoOAuthService) {
-        this.kakaoOAuthService = kakaoOAuthService;
+    public String 테스트용_고정_토큰() {
+        // JWT 구조는 가짜여도 되고, 실제로 파싱만 통과하면 됩니다.
+        // 서버에서 검증을 우회하거나 stub 처리해야 합니다.
+        return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.cDF0ToCw0beej_PcZZQAhLPSXPZp77-iY8CHOJ9kGLk";
     }
 
-    public String 카카오_테스트_계정으로_토큰_발급(String fakeCode) {
-        return kakaoOAuthService.loginOrRegister(fakeCode);
+    public Member 테스트용_회원(){
+        return new Member(1L, "테스트", "access-token", "refresh-token", 0);
     }
 }

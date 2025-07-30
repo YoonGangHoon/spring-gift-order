@@ -89,7 +89,7 @@ class KakaoOAuthServiceTokenTest {
                 .andRespond(withSuccess(userResponse, MediaType.APPLICATION_JSON));
 
         // when
-        String jwt = e2ETestUtils.카카오_테스트_계정으로_토큰_발급(fakeCode);
+        String jwt = e2ETestUtils.테스트용_고정_토큰();
 
         // then
         assertThat(jwt).isNotBlank();

@@ -31,7 +31,6 @@ public class OptionE2ETest {
 
     private RestClient restClient;
     private String token;
-    private String fakeCode;
 
     @Autowired
     private KakaoOAuthService kakaoOAuthService;
@@ -42,8 +41,7 @@ public class OptionE2ETest {
             .baseUrl("http://localhost:" + port)
             .build();
 
-        fakeCode = "fake-code";
-        token = new E2ETestUtils(kakaoOAuthService).카카오_테스트_계정으로_토큰_발급(fakeCode);
+        token = new E2ETestUtils().테스트용_고정_토큰();
 
         List<OptionRequestDto> options = of(
                 new OptionRequestDto("테스트 옵션1", 100),

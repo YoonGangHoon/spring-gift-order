@@ -6,6 +6,11 @@ import gift.dto.product.ProductResponseDto;
 import gift.dto.wish.WishCreateResponseDto;
 import gift.dto.wish.WishRequestDto;
 import gift.dto.wish.WishResponseDto;
+import gift.entity.Member;
+import gift.repository.MemberRepository;
+import gift.repository.OptionRepository;
+import gift.repository.ProductRepository;
+import gift.repository.WishRepository;
 import gift.service.KakaoOAuthService;
 import gift.utils.E2ETestUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,10 +37,25 @@ public class WishE2ETest {
 
     private RestClient restClient;
     private String token;
-    private String fakeCode;
+    private Member member;
 
     @Autowired
     private KakaoOAuthService kakaoOAuthService;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private WishRepository wishRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private OptionRepository optionRepository;
+
+    @Autowired
+    private E2ETestUtils utils;
 
     @BeforeEach
     void setUp() {
@@ -43,8 +63,14 @@ public class WishE2ETest {
                 .baseUrl("http://localhost:" + port)
                 .build();
 
-        fakeCode = "fake-code";
-        token = new E2ETestUtils(kakaoOAuthService).카카오_테스트_계정으로_토큰_발급(fakeCode);
+        wishRepository.deleteAllInBatch();
+        optionRepository.deleteAllInBatch();
+        productRepository.deleteAllInBatch();
+
+        token = utils.테스트용_고정_토큰();
+        member = utils.테스트용_회원();
+        memberRepository.findByKakaoId(member.getKakaoId())
+                .orElseGet(() -> memberRepository.save(member));
     }
 
     @Test
@@ -128,7 +154,7 @@ public class WishE2ETest {
         List<OptionRequestDto> options = of(
                 new OptionRequestDto("테스트 옵션", 100)
         );
-        ProductRequestDto productRequest = new ProductRequestDto("카페라떼", 4800, "latte.jpg", options);
+        ProductRequestDto productRequest = new ProductRequestDto("아이스 아메리카노", 4500, "ice_americano.jpg", options);
 
         ProductResponseDto product = restClient.post()
                 .uri("/api/products")
