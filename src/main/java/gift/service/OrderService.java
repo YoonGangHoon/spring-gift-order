@@ -51,8 +51,9 @@ public class OrderService {
         Order saved = orderRepository.save(order);
 
         Wish wish = wishRepository.findByMemberIdAndProductId(memberId, option.getProduct().getId());
-        wishRepository.delete(wish);
-
+        if  (wish != null) {
+            wishRepository.delete(wish);
+        }
         return saved;
     }
 
