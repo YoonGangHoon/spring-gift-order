@@ -16,8 +16,8 @@ public class KakaoMessageService {
 
     private final RestTemplate restTemplate;
 
-    @Value("${kakao.send-message-url}")
-    private String sendMessageUrl;
+    @Value("${kakao.api-url}")
+    private String kakaoApiUrl;
 
     @Value("${kakao.redirect-message-web-url}")
     private String webUrl;
@@ -40,7 +40,7 @@ public class KakaoMessageService {
         body.add("template_object", messageJson);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-        restTemplate.postForEntity(sendMessageUrl, request, String.class);
+        restTemplate.postForEntity(kakaoApiUrl+"/v2/api/talk/memo/default/send", request, String.class);
     }
 
     private String buildMessage(Order order) {

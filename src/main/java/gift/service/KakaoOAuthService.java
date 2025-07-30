@@ -29,11 +29,11 @@ public class KakaoOAuthService {
     @Value("${kakao.redirect-uri}")
     private String redirectUri;
 
-    @Value("${kakao.token-url}")
-    private String tokenUrl;
+    @Value("${kakao.auth-url}")
+    private String kakaoAuthUrl;
 
-    @Value("${kakao.user-info-url}")
-    private String userInfoUrl;
+    @Value("${kakao.api-url}")
+    private String kakaoApiUrl;
 
     public KakaoOAuthService(
             RestTemplateBuilder builder,
@@ -75,7 +75,7 @@ public class KakaoOAuthService {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
 
-        return restTemplate.postForObject(tokenUrl, request, KakaoTokenResponseDto.class);
+        return restTemplate.postForObject(kakaoAuthUrl+"/oauth/token", request, KakaoTokenResponseDto.class);
     }
 
     public KakaoUserInfoResponseDto getUserInfo(String accessToken) {
@@ -83,6 +83,6 @@ public class KakaoOAuthService {
         headers.setBearerAuth(accessToken);
 
         HttpEntity<Void> request = new HttpEntity<>(headers);
-        return restTemplate.exchange(userInfoUrl, HttpMethod.GET, request, KakaoUserInfoResponseDto.class).getBody();
+        return restTemplate.exchange(kakaoApiUrl+"/v2/user/me", HttpMethod.GET, request, KakaoUserInfoResponseDto.class).getBody();
     }
 }
