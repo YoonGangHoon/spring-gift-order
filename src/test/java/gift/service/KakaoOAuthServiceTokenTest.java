@@ -1,7 +1,6 @@
 package gift.service;
 
 import gift.entity.Member;
-import gift.exception.oauth.KakaoErrorHandler;
 import gift.jwt.JwtProvider;
 import gift.repository.MemberRepository;
 import gift.utils.E2ETestUtils;
@@ -22,7 +21,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @RestClientTest(KakaoOAuthService.class)
-@Import({KakaoErrorHandler.class, E2ETestUtils.class})
+@Import(E2ETestUtils.class)
 class KakaoOAuthServiceTokenTest {
 
     @Autowired

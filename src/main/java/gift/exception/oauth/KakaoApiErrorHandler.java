@@ -1,7 +1,7 @@
 package gift.exception.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gift.dto.kakao.KakaoErrorResponseDto;
+import gift.dto.kakao.KakaoApiErrorResponseDto;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.lang.NonNull;
@@ -13,11 +13,11 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 @Component
-public class KakaoErrorHandler implements ResponseErrorHandler {
+public class KakaoApiErrorHandler implements ResponseErrorHandler {
 
     private final ObjectMapper objectMapper;
 
-    public KakaoErrorHandler(ObjectMapper objectMapper) {
+    public KakaoApiErrorHandler(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
@@ -31,8 +31,8 @@ public class KakaoErrorHandler implements ResponseErrorHandler {
         String responseBody = new String(response.getBody().readAllBytes(), StandardCharsets.UTF_8);
 
         try {
-            KakaoErrorResponseDto error = objectMapper
-                    .readerFor(KakaoErrorResponseDto.class)
+            KakaoApiErrorResponseDto error = objectMapper
+                    .readerFor(KakaoApiErrorResponseDto.class)
                     .readValue(responseBody);
 
             throw new OAuthException("Kakao API 에러 - code: " + error.code() + ", msg: " + error.msg());

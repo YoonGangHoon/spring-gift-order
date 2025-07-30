@@ -5,8 +5,8 @@ import gift.dto.kakao.KakaoUserInfoResponseDto;
 import gift.entity.Member;
 import gift.jwt.JwtProvider;
 import gift.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,7 +19,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class KakaoOAuthService {
 
-    private final RestTemplate restTemplate;
+    private final RestTemplate kakaoAuthRestTemplate;
+    private final RestTemplate kakaoApiRestTemplate;
     private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
 
@@ -36,11 +37,13 @@ public class KakaoOAuthService {
     private String kakaoApiUrl;
 
     public KakaoOAuthService(
-            RestTemplateBuilder builder,
+            @Qualifier("kakaoAuthRestTemplate") RestTemplate kakaoAuthRestTemplate,
+            @Qualifier("kakaoApiRestTemplate") RestTemplate kakaoApiRestTemplate,
             MemberRepository memberRepository,
             JwtProvider jwtProvider
     ) {
-        this.restTemplate = builder.build();
+        this.kakaoAuthRestTemplate = kakaoAuthRestTemplate;
+        this.kakaoApiRestTemplate = kakaoApiRestTemplate;
         this.memberRepository = memberRepository;
         this.jwtProvider = jwtProvider;
     }
@@ -48,17 +51,18 @@ public class KakaoOAuthService {
     public String loginOrRegister(String code) {
         KakaoTokenResponseDto token = getAccessToken(code);
         KakaoUserInfoResponseDto user = getUserInfo(token.accessToken());
+
         Member member = memberRepository.findByKakaoId(user.id())
                 .orElseGet(() -> memberRepository.save(
-                        new Member(
-                                user.id(),
-                                user.kakao_account().profile().nickname(),
-                                token.accessToken(),
-                                token.refreshToken(),
-                                token.refreshTokenExpiresIn()
+                                new Member(
+                                        user.id(),
+                                        user.kakao_account().profile().nickname(),
+                                        token.accessToken(),
+                                        token.refreshToken(),
+                                        token.refreshTokenExpiresIn()
+                                )
                         )
-                )
-        );
+                );
 
         return jwtProvider.generateToken(member);
     }
@@ -75,7 +79,7 @@ public class KakaoOAuthService {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
 
-        return restTemplate.postForObject(kakaoAuthUrl+"/oauth/token", request, KakaoTokenResponseDto.class);
+        return kakaoAuthRestTemplate.postForObject(kakaoAuthUrl + "/oauth/token", request, KakaoTokenResponseDto.class);
     }
 
     public KakaoUserInfoResponseDto getUserInfo(String accessToken) {
@@ -83,6 +87,7 @@ public class KakaoOAuthService {
         headers.setBearerAuth(accessToken);
 
         HttpEntity<Void> request = new HttpEntity<>(headers);
-        return restTemplate.exchange(kakaoApiUrl+"/v2/user/me", HttpMethod.GET, request, KakaoUserInfoResponseDto.class).getBody();
+        return kakaoApiRestTemplate.exchange(kakaoApiUrl + "/v2/user/me", HttpMethod.GET, request, KakaoUserInfoResponseDto.class).getBody();
     }
 }
+
