@@ -26,6 +26,11 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
                              @NonNull HttpServletResponse response,
                              @NonNull Object handler) {
 
+        // Preflight 요청 통과
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null) {
