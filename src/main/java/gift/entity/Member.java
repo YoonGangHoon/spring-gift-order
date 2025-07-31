@@ -9,57 +9,46 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 15, nullable = false)
-    private String name;
-
     @Column(nullable = false, unique = true)
-    private String email;
+    private Long kakaoId;
 
     @Column(nullable = false)
-    private String password;
+    private String nickname;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
+    private String accessToken;
 
-    protected Member(){}
+    private String refreshToken;
 
-    public Member(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = Role.USER;
+    private int tokenExpiresAt;
+
+    protected Member() {
     }
 
-    public Member(Long id, String name, String email, String password, Role role) {
+    public Member(Long id){
         this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
+    }
+
+    public Member(Long kakaoId, String nickname, String accessToken, String refreshToken, int tokenExpiresAt) {
+        this.kakaoId = kakaoId;
+        this.nickname = nickname;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.tokenExpiresAt = tokenExpiresAt;
+    }
+
+    public Long getKakaoId(){
+        return kakaoId;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public Member updateTo(String name, String email, String password) {
-        return new Member(this.id, name, email, password, this.role);
+    public String getAccessToken() {
+        return accessToken;
     }
 }

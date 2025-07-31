@@ -1,9 +1,9 @@
 package gift.controller;
 
 import gift.config.LoginMember;
-import gift.dto.WishCreateResponseDto;
-import gift.dto.WishRequestDto;
-import gift.dto.WishResponseDto;
+import gift.dto.wish.WishCreateResponseDto;
+import gift.dto.wish.WishRequestDto;
+import gift.dto.wish.WishResponseDto;
 import gift.entity.Member;
 import gift.service.WishService;
 import org.springframework.data.domain.Pageable;

@@ -1,7 +1,7 @@
 package gift.service;
 
-import gift.dto.ProductRequestDto;
-import gift.dto.ProductResponseDto;
+import gift.dto.product.ProductRequestDto;
+import gift.dto.product.ProductResponseDto;
 import gift.entity.Option;
 import gift.entity.Product;
 import gift.exception.ProductNotExistException;

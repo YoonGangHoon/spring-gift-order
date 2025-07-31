@@ -1,7 +1,7 @@
 package gift.controller.view;
 
-import gift.dto.MemberLoginRequestDto;
-import gift.service.MemberService;
+import gift.dto.member.MemberLoginRequestDto;
+import gift.service.AdminService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -20,9 +20,9 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class AdminViewController {
 
-    private final MemberService memberService;
-    public AdminViewController(MemberService memberService) {
-        this.memberService = memberService;
+    private final AdminService adminService;
+    public AdminViewController(AdminService adminService) {
+        this.adminService = adminService;
     }
 
     @GetMapping("/login")
@@ -44,7 +44,7 @@ public class AdminViewController {
             return mav;
         }
 
-        String token = memberService.login(requestDto);
+        String token = adminService.login(requestDto);
 
         Cookie jwtCookie = new Cookie("jwt", token);
         jwtCookie.setPath("/");

@@ -18,7 +18,7 @@ public class Option {
     @Column(nullable = false)
     private Integer quantity;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "productId")
     private Product product;
 
@@ -33,6 +33,8 @@ public class Option {
     public Integer getQuantity() {
         return quantity;
     }
+
+    public Product getProduct() { return product; }
 
     protected Option() {}
 

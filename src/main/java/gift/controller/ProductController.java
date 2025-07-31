@@ -1,9 +1,9 @@
 package gift.controller;
 
-import gift.dto.OptionRequestDto;
-import gift.dto.OptionResponseDto;
-import gift.dto.ProductRequestDto;
-import gift.dto.ProductResponseDto;
+import gift.dto.option.OptionRequestDto;
+import gift.dto.option.OptionResponseDto;
+import gift.dto.product.ProductRequestDto;
+import gift.dto.product.ProductResponseDto;
 import gift.service.OptionService;
 import gift.service.ProductService;
 import jakarta.validation.Valid;

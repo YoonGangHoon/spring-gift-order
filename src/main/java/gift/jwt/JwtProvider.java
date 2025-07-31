@@ -1,5 +1,6 @@
 package gift.jwt;
 
+import gift.entity.Admin;
 import gift.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -26,7 +27,14 @@ public class JwtProvider {
     public String generateToken(Member member) {
         return Jwts.builder()
                 .subject(member.getId().toString())
-                .claim("role", member.getRole().toString())
+                .signWith(key)
+                .compact();
+    }
+
+    public String generateToken(Admin admin) {
+        return Jwts.builder()
+                .subject(admin.getId().toString())
+                .claim("role", admin.getRole().toString())
                 .signWith(key)
                 .compact();
     }
